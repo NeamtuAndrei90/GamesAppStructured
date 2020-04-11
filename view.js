@@ -29,7 +29,12 @@ function createDomElement(gameObj){
 
     
     container1.appendChild(gameELement);
-
+    document.getElementById(`${gameObj._id}`).addEventListener("click", function(event){
+        deleteGame(event.target.getAttribute("id"), function(apiResponse){
+            console.log(apiResponse);
+            removeDeletedElementFromDOM(event.target.parentElement);
+        })
+    });
 
 }
 
