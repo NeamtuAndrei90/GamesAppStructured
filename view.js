@@ -8,20 +8,29 @@ getGamesList(function(arrayOfGames){
 function createDomElement(gameObj){
     var container1 = document.querySelector('.container');
     const gameELement = document.createElement("div");
+    gameELement.setAttribute("id", gameObj._id)
     gameELement.innerHTML = `<h1>${gameObj.title}</h1> 
-                        <img src="${gameObj.imageUrl}" />
-                        <p>${gameObj.description}</p> 
-                        <button class="delete-btn" id="${gameObj._id}">Delete Game</button>
-                        <button class="update-btn" id="${gameObj._id}">Edit Game</button>`;    
+                            <img src="${gameObj.imageUrl}" />
+                            <p>${gameObj.description}</p> 
+                            <button class="delete-btn" id="${gameObj._id}">Delete Game</button>
+                            <button class="update-btn" id="${gameObj._id}">Edit Game</button>`;
 
+    const updateGameElement = document.createElement('div');
+    updateGameElement.innerHTML = `<form class="updateForm">
+                                    <label for="gameTitle">Title *</label>
+                                    <input type="text" value="" name="gameTitle" id="newGameTitle" placeholder="${gameObj.title}" />
+                                    <label for="gameDescription">Description</label>
+                                    <textarea name="gameDescription" id="newGameDescription" placeholder="${gameObj.description}"></textarea>
+                                    <label for="newGameImageUrl">Image URL *</label>
+                                    <input type="text" name="newGameImageUrl" id="newGameImageUrl" placeholder="${gameObj.imageUrl}"/>
+                                    <button class="updateBtn">Save Changes</button>
+                                    <button class="cancelBtn">Cancel</button>
+                                    </form>`;
+
+    
     container1.appendChild(gameELement);
 
-    document.getElementById(`${gameObj._id}`).addEventListener("click", function(event){
-        deleteGame(event.target.getAttribute("id"), function(apiResponse){
-            console.log(apiResponse);
-            removeDeletedElementFromDOM(event.target.parentElement);
-        })
-    });
+
 }
 
 function removeDeletedElementFromDOM(domElement){
