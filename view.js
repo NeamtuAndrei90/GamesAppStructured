@@ -13,16 +13,16 @@ function createDomElement(gameObj){
                             <img src="${gameObj.imageUrl}" />
                             <p>${gameObj.description}</p> 
                             <button class="delete-btn" id="${gameObj._id}">Delete Game</button>
-                            <button class="update-btn" id="${gameObj._id}">Edit Game</button>`;
+                            <button class="edit-btn" id="${gameObj._id}">Edit Game</button>`;
 
     const updateGameElement = document.createElement('div');
     updateGameElement.innerHTML = `<form class="updateForm">
-                                    <label for="gameTitle">Title *</label>
-                                    <input type="text" value="" name="gameTitle" id="newGameTitle" placeholder="${gameObj.title}" />
-                                    <label for="gameDescription">Description</label>
-                                    <textarea name="gameDescription" id="newGameDescription" placeholder="${gameObj.description}"></textarea>
+                                    <label for="newGameTitle">Title *</label>
+                                    <input type="text" value="${gameObj.title}" name="newGameTitle" id="newGameTitle" />
+                                    <label for="newGameDescription">Description</label>
+                                    <textarea name="newGameDescription" id="newGameDescription">${gameObj.description}</textarea>
                                     <label for="newGameImageUrl">Image URL *</label>
-                                    <input type="text" name="newGameImageUrl" id="newGameImageUrl" placeholder="${gameObj.imageUrl}"/>
+                                    <input type="text" name="newGameImageUrl" id="newGameImageUrl" value="${gameObj.title}"/>
                                     <button class="updateBtn">Save Changes</button>
                                     <button class="cancelBtn">Cancel</button>
                                     </form>`;
@@ -30,10 +30,14 @@ function createDomElement(gameObj){
     
     container1.appendChild(gameELement);
     document.getElementById(`${gameObj._id}`).addEventListener("click", function(event){
-        deleteGame(event.target.getAttribute("id"), function(apiResponse){
-            console.log(apiResponse);
-            removeDeletedElementFromDOM(event.target.parentElement);
-        })
+        if(event.target.classList.contains('delete-btn')){
+            deleteGame(event.target.getAttribute("id"), function(apiResponse){
+                console.log(apiResponse);
+                removeDeletedElementFromDOM(event.target.parentElement);
+            })
+        }else if(event.target.classList.contains('edit-btn')) {
+            gameELement.appendChild(updateGameElement);
+        }
     });
 
 }
@@ -100,4 +104,18 @@ document.querySelector(".submitBtn").addEventListener("click", function(event){
 
         createGameRequest(urlencoded, createDomElement);
     }
+})
+
+document.querySelector(".updateBtn").addEventListener("click", function(event){
+    event.preventDefault();
+
+    const newGameTitle = document.getElementById("newGameTitle");
+    const newGameDescription = document.getElementById("newGameDescription");
+    const newGameImageUrl = document.getElementById("newGameImageUrl");
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("title", newGameTitle.value);
+    urlencoded.append("description", newGameDescription.value);
+    urlencoded.append("imageUrl", newGameImageUrl.value);
+
+    updateGameRequest(urlencoded, createDomElement);
 })

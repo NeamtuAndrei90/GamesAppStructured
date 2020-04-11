@@ -43,7 +43,7 @@ function createGameRequest(gameObject, callbackCreateGame){
 
 function updateGameRequest(updatedGameObj, callbackCreateGame){
     fetch(apiURL + "/games", {
-        method: "PUT",
+        method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
