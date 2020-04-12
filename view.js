@@ -22,13 +22,13 @@ function createDomElement(gameObj){
                                     <label for="newGameDescription">Description</label>
                                     <textarea name="newGameDescription" id="newGameDescription">${gameObj.description}</textarea>
                                     <label for="newGameImageUrl">Image URL *</label>
-                                    <input type="text" name="newGameImageUrl" id="newGameImageUrl" value="${gameObj.title}"/>
+                                    <input type="text" name="newGameImageUrl" id="newGameImageUrl" value="${gameObj.imageUrl}"/>
                                     <button class="updateBtn">Save Changes</button>
                                     <button class="cancelBtn">Cancel</button>
                                     </form>`;
 
-    
     container1.appendChild(gameELement);
+    
     document.getElementById(`${gameObj._id}`).addEventListener("click", function(event){
         if(event.target.classList.contains('delete-btn')){
             deleteGame(event.target.getAttribute("id"), function(apiResponse){
@@ -37,9 +37,23 @@ function createDomElement(gameObj){
             })
         }else if(event.target.classList.contains('edit-btn')) {
             gameELement.appendChild(updateGameElement);
+        }else if(event.target.classList.contains('cancelBtn')){
+            removeDeletedElementFromDOM(updateGameElement);
+        }else if(event.target.classList.contains('updateBtn')){
+            newDomElement(gameELement);
+            removeDeletedElementFromDOM(updateGameElement);
         }
     });
 
+}
+
+function newDomElement(gameELement){
+    const newGameTitle = document.getElementById("newGameTitle").value;
+    const newGameDescription = document.getElementById("newGameDescription").value;
+    const newGameImageUrl = document.getElementById("newGameImageUrl").value;
+    gameELement.querySelector('h1').innerHTML = newGameTitle;
+    gameELement.querySelector('p').innerHTML = newGameDescription;
+    gameELement.querySelector('img').src = newGameImageUrl;
 }
 
 function removeDeletedElementFromDOM(domElement){
