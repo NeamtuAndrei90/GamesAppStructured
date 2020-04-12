@@ -55,10 +55,3 @@ function updateGameRequest(gameId, updatedGameObj, callbackCreateGame){
         callbackCreateGame(updatedGame);
     });
 }
-
-
-// "application/json"
-// {"cheie": "valoare", "cheie2": "valoare2"}
-
-//application/x-www-form-urlencoded
-// cheie=valoare&cheie2=valoare2

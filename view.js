@@ -130,17 +130,3 @@ document.querySelector(".submitBtn").addEventListener("click", function(event){
         createGameRequest(urlencoded, createDomElement);
     }
 })
-
-// document.querySelector(".updateBtn").addEventListener("click", function(event){
-//     event.preventDefault();
-
-//     const newGameTitle = document.getElementById("newGameTitle");
-//     const newGameDescription = document.getElementById("newGameDescription");
-//     const newGameImageUrl = document.getElementById("newGameImageUrl");
-//     var urlencoded = new URLSearchParams();
-//     urlencoded.append("title", newGameTitle.value);
-//     urlencoded.append("description", newGameDescription.value);
-//     urlencoded.append("imageUrl", newGameImageUrl.value);
-
-//     updateGameRequest(urlencoded, createDomElement);
-// })
