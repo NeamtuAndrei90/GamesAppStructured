@@ -12,48 +12,59 @@ function createDomElement(gameObj){
     gameELement.innerHTML = `<h1>${gameObj.title}</h1> 
                             <img src="${gameObj.imageUrl}" />
                             <p>${gameObj.description}</p> 
-                            <button class="delete-btn" id="${gameObj._id}">Delete Game</button>
-                            <button class="edit-btn" id="${gameObj._id}">Edit Game</button>`;
+                            <button class="delete-btn">Delete Game</button>
+                            <button class="edit-btn">Edit Game</button>`;
 
-    const updateGameElement = document.createElement('div');
-    updateGameElement.innerHTML = `<form class="updateForm">
-                                    <label for="newGameTitle">Title *</label>
+    const updateGameElement = document.createElement('form');
+    updateGameElement.classList.add('updateForm')
+    updateGameElement.innerHTML = `<label for="newGameTitle">Title *</label>
                                     <input type="text" value="${gameObj.title}" name="newGameTitle" id="newGameTitle" />
                                     <label for="newGameDescription">Description</label>
                                     <textarea name="newGameDescription" id="newGameDescription">${gameObj.description}</textarea>
                                     <label for="newGameImageUrl">Image URL *</label>
                                     <input type="text" name="newGameImageUrl" id="newGameImageUrl" value="${gameObj.imageUrl}"/>
                                     <button class="updateBtn">Save Changes</button>
-                                    <button class="cancelBtn">Cancel</button>
-                                    </form>`;
+                                    <button class="cancelBtn">Cancel</button>`;
 
     container1.appendChild(gameELement);
     
     document.getElementById(`${gameObj._id}`).addEventListener("click", function(event){
         if(event.target.classList.contains('delete-btn')){
+            const gameDiv = event.target.parentElement;
             deleteGame(event.target.getAttribute("id"), function(apiResponse){
                 console.log(apiResponse);
-                removeDeletedElementFromDOM(event.target.parentElement);
+                removeDeletedElementFromDOM(gameDiv);
             })
         }else if(event.target.classList.contains('edit-btn')) {
-            gameELement.appendChild(updateGameElement);
+            const gameDiv = event.target.parentElement;
+            gameDiv.appendChild(updateGameElement);
         }else if(event.target.classList.contains('cancelBtn')){
-            removeDeletedElementFromDOM(updateGameElement);
+            const gameForm = event.target.parentElement;
+            removeDeletedElementFromDOM(gameForm);
         }else if(event.target.classList.contains('updateBtn')){
-            newDomElement(gameELement);
-            removeDeletedElementFromDOM(updateGameElement);
+            const gameForm = event.target.parentElement;
+            event.preventDefault();
+            console.log(gameForm.parentElement);
+            newDomElement(gameForm.parentElement);
+            removeDeletedElementFromDOM(gameForm);
         }
     });
 
 }
 
-function newDomElement(gameELement){
+function newDomElement(gameElement){
     const newGameTitle = document.getElementById("newGameTitle").value;
     const newGameDescription = document.getElementById("newGameDescription").value;
     const newGameImageUrl = document.getElementById("newGameImageUrl").value;
-    gameELement.querySelector('h1').innerHTML = newGameTitle;
-    gameELement.querySelector('p').innerHTML = newGameDescription;
-    gameELement.querySelector('img').src = newGameImageUrl;
+    gameElement.querySelector('h1').innerHTML = newGameTitle;
+    gameElement.querySelector('p').innerHTML = newGameDescription;
+    gameElement.querySelector('img').src = newGameImageUrl;
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("title", newGameTitle);
+    urlencoded.append("description", newGameDescription);
+    urlencoded.append("imageUrl", newGameImageUrl);
+console.log(gameElement);
+    updateGameRequest(gameElement.getAttribute('id'), urlencoded, createDomElement);
 }
 
 function removeDeletedElementFromDOM(domElement){
@@ -120,16 +131,16 @@ document.querySelector(".submitBtn").addEventListener("click", function(event){
     }
 })
 
-document.querySelector(".updateBtn").addEventListener("click", function(event){
-    event.preventDefault();
+// document.querySelector(".updateBtn").addEventListener("click", function(event){
+//     event.preventDefault();
 
-    const newGameTitle = document.getElementById("newGameTitle");
-    const newGameDescription = document.getElementById("newGameDescription");
-    const newGameImageUrl = document.getElementById("newGameImageUrl");
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("title", newGameTitle.value);
-    urlencoded.append("description", newGameDescription.value);
-    urlencoded.append("imageUrl", newGameImageUrl.value);
+//     const newGameTitle = document.getElementById("newGameTitle");
+//     const newGameDescription = document.getElementById("newGameDescription");
+//     const newGameImageUrl = document.getElementById("newGameImageUrl");
+//     var urlencoded = new URLSearchParams();
+//     urlencoded.append("title", newGameTitle.value);
+//     urlencoded.append("description", newGameDescription.value);
+//     urlencoded.append("imageUrl", newGameImageUrl.value);
 
-    updateGameRequest(urlencoded, createDomElement);
-})
+//     updateGameRequest(urlencoded, createDomElement);
+// })

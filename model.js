@@ -41,8 +41,8 @@ function createGameRequest(gameObject, callbackCreateGame){
 }
 
 
-function updateGameRequest(gameId, gameELement, updatedGameObj, callbackCreateGame){
-    fetch(apiURL + "/games" + gameId , {
+function updateGameRequest(gameId, updatedGameObj, callbackCreateGame){
+    fetch(apiURL + "/games/" + gameId , {
         method: "PUT",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -52,7 +52,7 @@ function updateGameRequest(gameId, gameELement, updatedGameObj, callbackCreateGa
         return response.json();
     }).then(function(updatedGame){
         console.log(updatedGame);
-        callbackCreateGame(gameELement);
+        callbackCreateGame(updatedGame);
     });
 }
 
