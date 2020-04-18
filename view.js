@@ -31,7 +31,7 @@ function createDomElement(gameObj){
     document.getElementById(`${gameObj._id}`).addEventListener("click", function(event){
         if(event.target.classList.contains('delete-btn')){
             const gameDiv = event.target.parentElement;
-            deleteGame(event.target.getAttribute("id"), function(apiResponse){
+            deleteGame(gameELement.getAttribute("id"), function(apiResponse){
                 console.log(apiResponse);
                 removeDeletedElementFromDOM(gameDiv);
             })
